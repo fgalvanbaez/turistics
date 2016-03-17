@@ -60,3 +60,11 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+
+#Pycharm
+.idea/
+
+web/migrations
+
+db.sqlite3
