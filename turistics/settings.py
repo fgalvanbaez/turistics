@@ -25,7 +25,7 @@ SECRET_KEY = 'dm+q-b6^4(nmol^z6s@q)@b@p9&5ua=mrz$xr-tg20#z_vkja7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
+    'djcelery',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -119,4 +120,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+
 STATIC_URL = '/static/'
+
+##CELERY
+from datetime import timedelta
+
+CELERY_RESULT_BACKEND="djcelery.backends.database:DatabaseBackend"
+CELERYBEAT_SCHEDULE = {
+    "add-every-30-seconds": {
+        "task": "turistics.tasks.request_tripadvisor",
+        "schedule": timedelta(seconds=30),
+        "args": ()
+    },
+}
