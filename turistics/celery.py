@@ -19,5 +19,5 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 #ejemplo de tarea que muestra su propia información. El bind=True indica que hace referencia a su instancia de tarea actual.
 @app.task(bind=True)
-def request_tripadvisor(self):
+def request_example(self):
     print('Request: {0!r}'.format(self.request))

@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-
+from __future__ import absolute_import
 import os
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,12 +126,23 @@ STATIC_URL = '/static/'
 
 ##CELERY
 from datetime import timedelta
+import djcelery
+from datetime import timedelta
+from celery.schedules import crontab
+
+djcelery.setup_loader()
 
 CELERY_RESULT_BACKEND="djcelery.backends.database:DatabaseBackend"
+
+#PAra rabbit MQ
+BROKER_URL = "amqp://guest:guest@localhost//"
+
+
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERYBEAT_SCHEDULE = {
-    "add-every-30-seconds": {
-        "task": "turistics.tasks.request_tripadvisor",
-        "schedule": timedelta(seconds=30),
-        "args": ()
+    'add-every-24-hours': {
+        'task': 'web.tasks.request_tripadvisor',
+        #'schedule': crontab(hour=5, minute=0),
+        'schedule': timedelta(seconds=30),
     },
 }
