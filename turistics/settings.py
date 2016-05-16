@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
-    'djcelery',
+    'scraping',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,25 +125,23 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-##CELERY
-from datetime import timedelta
-import djcelery
-from datetime import timedelta
-from celery.schedules import crontab
 
-djcelery.setup_loader()
+#DJANGO CRONTAB
 
-CELERY_RESULT_BACKEND="djcelery.backends.database:DatabaseBackend"
+CRONJOBS = [
 
-#PAra rabbit MQ
-BROKER_URL = "amqp://guest:guest@localhost//"
+    ('0  10 * * *', 'python manage.py exec_scraper', 'https://www.tripadvisor.es/Hotels-g187479-Tenerife_Canary_Islands-Hotels.html'
+, {'indent': 4},),
 
+    ('0  11 * * *', 'python manage.py exec_scraper', 'https://www.tripadvisor.es/Hotels-g187471-Gran_Canaria_Canary_Islands-Hotels.html'
+, {'indent': 4},),
 
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-CELERYBEAT_SCHEDULE = {
-    'add-every-24-hours': {
-        'task': 'web.tasks.request_tripadvisor',
-        #'schedule': crontab(hour=5, minute=0),
-        'schedule': timedelta(seconds=30),
-    },
-}
+    #('*/5 * * * *', 'myapp.cron.my_scheduled_job'),
+
+    # format 1
+    #('0   0 1 * *', 'myapp.cron.my_scheduled_job', '>> /tmp/scheduled_job.log'),
+
+    # format 2
+    #('0   0 1 * *', 'myapp.cron.other_scheduled_job', ['myapp']),
+    #('0   0 * * 0', 'django.core.management.call_command', ['dumpdata', 'auth'], {'indent': 4}, '> /home/john/backups/last_sunday_auth_backup.json'),
+]

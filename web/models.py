@@ -33,7 +33,11 @@ class Host(models.Model):
     services = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
     quality_price = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
     cleaning = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
-    date = models.DateField(auto_now_add=True)
+    total = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.name
 
     class meta:
         pass
