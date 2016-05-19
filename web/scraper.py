@@ -28,8 +28,19 @@ def scrap_tripadvisor(link):
             req2 = requests.get(domain + s)
             hotel = req2.text
             soup2 = BeautifulSoup(hotel, "html.parser")
-            text = soup2.find("h1", id="HEADING")
 
+            # Aquí obtengo el nombre del alojamiento
+            text = soup2.find("h1", id="HEADING")
+            name = text.get_text().replace("\n", '')  #Reemplazo los salto de página del html
+
+
+            rate = soup2.find('img', property="ratingValue")
+            print rate['content']
+            rateTotal = rate['content'].replace(".", ",")
+            rateTotal
+            print rateTotal
+
+            #Obtención del tipo de alojamiento
             secondary_navbar = soup2.find('ul', id='BREADCRUMBS')
 
             #Usado para eliminar los saltos de línea en el array contents
@@ -39,7 +50,6 @@ def scrap_tripadvisor(link):
 
             print len(secondary_navbar.contents)
             print secondary_navbar.contents[len(secondary_navbar.contents)-1].contents[0].contents[0].string
-
 
             type = ''
             if "Hoteles" in secondary_navbar.contents[len(secondary_navbar.contents)-1].contents[0].contents[0].string:
@@ -54,10 +64,8 @@ def scrap_tripadvisor(link):
             if "Otros" in secondary_navbar.contents[len(secondary_navbar.contents) - 1].contents[0].contents[0].string:
                 type = 'O'
 
-            #Aquí obtengo el nombre del alojamiento
-            name = text.get_text().replace("\n", '')  #Reemplazo los salto de página del html
 
             host = Host.objects.create(type=type, name=name, sleep_quality=1, location=1, rooms=1,
-                                       services=1, quality_price=1, cleaning=1, total=1)
+                                       services=1, quality_price=1, cleaning=1, total=rateTotal)
 
             host.save()
