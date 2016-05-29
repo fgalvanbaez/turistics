@@ -65,7 +65,7 @@ def scrap_tripadvisor(link):
                 type = 'O'
 
 
-            host = Host.objects.create(type=type, name=name, sleep_quality=1, location=1, rooms=1,
+            """host = Host.objects.create(type=type, name=name, sleep_quality=1, location=1, rooms=1,
                                        services=1, quality_price=1, cleaning=1, total=rateTotal)
 
-            host.save()
+            host.save()"""

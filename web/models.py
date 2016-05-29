@@ -26,6 +26,7 @@ SCORES = (
 class Host(models.Model):
 
     type = models.CharField(max_length=1, choices=HOST_TYPES, blank=True, null=True)
+    code = models.CharField(max_length=100, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     sleep_quality = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
     location = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
