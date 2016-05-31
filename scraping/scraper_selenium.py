@@ -22,11 +22,9 @@ def scrap_tripadvisor(link):
         driver_firefox.get(link)
         next = driver_firefox.find_element_by_class_name("next")
 
-
-        print next.get_attribute('href')
+        print len(next.get_attribute('href'))
         while len(next.get_attribute('href')) > 0:
 
-            #print pg.get_attribute('href')
             hotels_n = driver_firefox.find_elements_by_class_name('listing')
             for h in hotels_n:
                 try:
@@ -39,19 +37,20 @@ def scrap_tripadvisor(link):
                     print code
 
                     total = h.find_element_by_class_name('sprite-ratings').get_attribute('alt')
-                    print total
+                    rate = total.split(' ')
 
-                    host = Host.objects.create(type='H', code=code, name=name, sleep_quality=1, location=1, rooms=1,
-                        services=1, quality_price=1, cleaning=1, total='')
+                    """host = Host.objects.create(type='H', code=code, name=name, sleep_quality=1, location=1, rooms=1,
+                        services=1, quality_price=1, cleaning=1, total=rate[0])
 
-                    host.save()
+                    host.save()"""
 
                 except Exception as e:
                     print e
 
-
+            print next.get_attribute('href')
             try:
                 driver_firefox.get(next.get_attribute('href'))
+                #driver_firefox.implicitly_wait(5)
             except Exception as e:
                 print e
 
