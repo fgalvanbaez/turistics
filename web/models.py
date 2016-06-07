@@ -28,12 +28,7 @@ class Host(models.Model):
     type = models.CharField(max_length=1, choices=HOST_TYPES, blank=True, null=True)
     code = models.CharField(max_length=100, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
-    sleep_quality = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
-    location = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
-    rooms = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
-    services = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
-    quality_price = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
-    cleaning = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
+    link = models.CharField(max_length=200, blank=True, null=True)
     total = models.CharField(max_length=3, choices=SCORES, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
